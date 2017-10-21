@@ -40,9 +40,9 @@ class App extends Component {
       })
   }
   
-  toggleEditModal = () => {
+  toggleEditModal = (book) => {
     this.setState((state) => ({
-      isEditModal: !state.isEditModal
+      isEditModal: book || false
     }) )
   };
 
@@ -57,7 +57,12 @@ class App extends Component {
       .then(this.updateBookList)
       .then(this.toggleDeleteModal)
   }
-  
+
+  updateBook = (book) => {
+    updateBook(book)
+      .then(this.updateBookList)
+      .then(this.toggleEditModal)
+  }
 
   render() {
     console.log(this.state)    
@@ -65,11 +70,11 @@ class App extends Component {
       <div className="App">
         {
           this.state.isEditModal ? 
-         <UpdateBookModal
-           isOpen={true}
-           onSave={()=>console.log('save')}
-           onCancel={this.toggleEditModal}
-           initialState={this.state.isEditModal}/>
+          <UpdateBookModal
+            isOpen={true}
+            onSave={(book)=>this.updateBook(book)}
+            onCancel={()=>this.toggleEditModal()}
+            initialState={this.state.isEditModal}/>
           : null
         }
         <Modal

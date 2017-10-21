@@ -5,11 +5,11 @@ import Modal from 'react-modal';
 const editModalStyle ={
   content: {
     maxWidth: '20%',
-    maxHeight: '20%',
+    maxHeight: '15%',
     top: '30%',
     left: '35%',
     borderRadius: '5px',
-    minWidth: '200px'
+    minWidth: '200px',   
   }
 }
 
@@ -20,27 +20,24 @@ class UpdateBookModal extends Component {
 
 
   componentDidMount() {
-    this.setState(this.props.intialState)  
+    this.setState(this.props.initialState)  
   }
   
   onSave = () => {
-    
+    this.props.onSave(this.state)
   }
 
-  onCancel = () => {
-
+  
+  handleTitleInput = (event) => {
+    this.setState({title: event.target.value})
   }
   
-  handTitleInput = (event) => {
-    this.setState({title: event.targer.value})
+  handleAuthorInput = (event) => {
+    this.setState({author: event.target.value})
   }
   
-  handAuthorInput = (event) => {
-    this.setState({author: event.targer.value})
-  }
-  
-  handDateInput = (event) => {
-    this.setState({date: event.targer.value})
+  handleDateInput = (event) => {
+    this.setState({date: event.target.value})
   }
   
 
@@ -61,7 +58,7 @@ class UpdateBookModal extends Component {
         <input placeholder='Date'
                value={this.state.date}
                onChange={this.handleDateInput}/>
-        <button className='btn' type='button' onClick={this.props.onSave}>
+        <button className='btn' type='button' onClick={this.onSave}>
           Save
         </button>
         <button className='btn' type='button' onClick={this.props.onCancel}>

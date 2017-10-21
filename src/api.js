@@ -12,7 +12,7 @@ export default {
 
     books = books.map(book=> 
       ( newBook.id !== book.id) ?
-                           books : newBook 
+                           book : newBook 
     );
     return Promise.resolve();
   },
