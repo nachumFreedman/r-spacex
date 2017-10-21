@@ -63,11 +63,15 @@ class App extends Component {
     console.log(this.state)    
     return (
       <div className="App">
-        <UpdateBookModal
-          isOpen={this.state.isEditModal}
-          onSave={()=>console.log('save')}
-          onCancel={this.toggleEditModal}
-          initialState={this.state.isEditModal}/>
+        {
+          this.state.isEditModal ? 
+         <UpdateBookModal
+           isOpen={true}
+           onSave={()=>console.log('save')}
+           onCancel={this.toggleEditModal}
+           initialState={this.state.isEditModal}/>
+          : null
+        }
         <Modal
           style={editModalStyle}
           shouldCloseOnOverlayClick={true}
@@ -89,7 +93,7 @@ class App extends Component {
               <img src='' alt=''/>
               <button type='button'
                       className='btn btn-default'
-                      onClick={({id, author, title, date})=>this.toggleEditModal}>
+                      onClick={()=>this.toggleEditModal({id, author, title, date})}>
                 edit icon
               </button>
               <button className='book-tile-delete-button'

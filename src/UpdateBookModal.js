@@ -18,13 +18,32 @@ class UpdateBookModal extends Component {
   state = {
   };
 
-  onSave = () => {
 
+  componentDidMount() {
+    this.setState(this.props.intialState)  
+  }
+  
+  onSave = () => {
+    
   }
 
   onCancel = () => {
 
   }
+  
+  handTitleInput = (event) => {
+    this.setState({title: event.targer.value})
+  }
+  
+  handAuthorInput = (event) => {
+    this.setState({author: event.targer.value})
+  }
+  
+  handDateInput = (event) => {
+    this.setState({date: event.targer.value})
+  }
+  
+
   
   render() {
     return (
@@ -33,9 +52,15 @@ class UpdateBookModal extends Component {
         shouldCloseOnOverlayClick={true}
         onRequestClose={this.props.onCancel}
         isOpen={this.props.isOpen}>
-        <input placeholder='Title'/>
-        <input placeholder='Author'/>
-        <input placeholder='Date'/>
+        <input placeholder='Title'
+               value={this.state.title}
+               onChange={this.handleTitleInput}/>
+        <input placeholder='Author'
+               value={this.state.author}
+               onChange={this.handleAuthorInput}/>
+        <input placeholder='Date'
+               value={this.state.date}
+               onChange={this.handleDateInput}/>
         <button className='btn' type='button' onClick={this.props.onSave}>
           Save
         </button>
