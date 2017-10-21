@@ -28,21 +28,30 @@
 }
 
 .book-tile {
-  display: flex;
-  align-items: flex-start;
   margin: 10px;
   border: 1px solid black;
-  width: 20vw;
-  padding: 20px;
+  min-width: 50px;
+  padding: 15px;
+  padding-top: 0;
   border-radius: 2px;
   box-shadow: 1px 1px 5px #888888;
+  list-style: none;
 }
+
 .book-tile:hover {
   box-shadow: 2px 2px 5px #888888;
 }
 
 .delete-button {
-  display: flex;
+  position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.book-tile-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.book-tile:h1 {
 }
