@@ -17,11 +17,11 @@ export default {
     return Promise.resolve();
   },
   
-  deleteook: (id)=> {
+  deleteBook: (id)=> {
     
     books = books.map(book=> 
       ( book.id !== id) ?
-                           books : undefined 
+                           book : undefined 
     ).filter(i => i)
     
     return Promise.resolve();

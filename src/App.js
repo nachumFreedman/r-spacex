@@ -3,8 +3,9 @@ import './App.css';
 import  api  from './api';
 import FaTimesCircle from 'react-icons/lib/fa/times-circle';
 import Modal from 'react-modal';
+import UpdateBookModal from './UpdateBookModal'
 
-const { getBooks, updateBook, deleteBooks } = api;
+const { getBooks, updateBook, deleteBook } = api;
 
 const editModalStyle ={
   content: {
@@ -13,6 +14,7 @@ const editModalStyle ={
     top: '30%',
     left: '35%',
     borderRadius: '5px',
+    minWidth: '200px'
   }
 }
 
@@ -21,20 +23,22 @@ class App extends Component {
   state = {
     books: [],
     isEditModal: false,
-    isEditModal: false,
+    isDeleteModal: false,
   };
   
-  
-  componentDidMount() {    
-    
+
+  componentDidMount() {      
+    this.updateBookList()
+  };
+
+  updateBookList = ()=>{
     getBooks()
       .then((books) => {
         this.setState((state) => ({
           books: books 
-        }) )
-        
+        }) )      
       })
-  };
+  }
   
   toggleEditModal = () => {
     this.setState((state) => ({
@@ -42,14 +46,16 @@ class App extends Component {
     }) )
   };
 
-  toggleDeleteModal = () => {
+  toggleDeleteModal = (id) => {
     this.setState((state) => ({
-      isDeleteModal: !state.isDeleteModal
+      isDeleteModal: id || false
     }) )
   };
 
-  updateBook = (id) => {
-    
+  deleteBook = () => {
+    deleteBook(this.state.isDeleteModal)
+      .then(this.updateBookList)
+      .then(this.toggleDeleteModal)
   }
   
 
@@ -57,50 +63,40 @@ class App extends Component {
     console.log(this.state)    
     return (
       <div className="App">
+        <UpdateBookModal
+          isOpen={this.state.isEditModal}
+          onSave={()=>console.log('save')}
+          onCancel={this.toggleEditModal}
+          initialState={this.state.isEditModal}/>
         <Modal
           style={editModalStyle}
           shouldCloseOnOverlayClick={true}
-          onRequestClose={this.toggleEditModal}
-          isOpen={this.state.isEditModal}>
-          <input placeholder='Title'/>
-          <input placeholder='Author'/>
-          <input placeholder='Date'/>
-          <button className='btn' type='button' onClick={this.toggleEditModal}>
-            Save
-          </button>
-          <button className='btn' type='button' onClick={this.toggleEditModal}>
-            Cancel
-          </button>
-        </Modal>
-        <Modal
-          style={editModalStyle}
-          shouldCloseOnOverlayClick={true}
-          onRequestClose={this.toggleDeleteModal}
-          isOpen={this.state.isDeleteModal}>
+          onRequestClose={()=>this.toggleDeleteModal()}
+          isOpen={!!this.state.isDeleteModal}>
           <h1>Are you sure?</h1> 
-          <button>Delete</button>
-          <button onClick={this.toggleDeleteModal}>Cancel</button>
+          <button onClick={this.deleteBook}>Delete</button>
+          <button onClick={()=>this.toggleDeleteModal()}>Cancel</button>
         </Modal>
         <ul className='book-tile-container'>{
           this.state.books.map(({id, author, title, date}) =>(
-          <li key={id} className='book-tile'>            
-            <h1>
-              {title}
-            </h1>
-            <p>
-              This book was written by {author} in {date}
-            </p>
-            <img src='' alt=''/>
-            <button type='button'
-                    className='btn btn-default'
-                    onClick={this.toggleEditModal}>
-              edit icon
-            </button>
-            <button className='book-tile-delete-button'
-                    onClick={this.toggleDeleteModal}>
-              delete button
-            </button>
-          </li>
+            <li key={id} className='book-tile'>            
+              <h1>
+                {title}
+              </h1>
+              <p>
+                This book was written by {author} in {date}
+              </p>
+              <img src='' alt=''/>
+              <button type='button'
+                      className='btn btn-default'
+                      onClick={({id, author, title, date})=>this.toggleEditModal}>
+                edit icon
+              </button>
+              <button className='book-tile-delete-button'
+                      onClick={()=>this.toggleDeleteModal(id)}>
+                delete button
+              </button>
+            </li>
           ) )
         }
         </ul>
