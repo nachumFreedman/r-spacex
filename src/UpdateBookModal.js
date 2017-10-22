@@ -16,6 +16,7 @@ const editModalStyle ={
 class UpdateBookModal extends Component {  
   
   state = {
+    isTitleInvalid: false,
   };
 
 
@@ -25,6 +26,7 @@ class UpdateBookModal extends Component {
   
   onSave = () => {
     this.props.onSave(this.state)
+        .catch(()=> this.setState({isTitleInvalid: true}))
   }
 
   
@@ -52,6 +54,13 @@ class UpdateBookModal extends Component {
         <input placeholder='Title'
                value={this.state.title}
                onChange={this.handleTitleInput}/>
+        {
+          this.state.isTitleInvalid ?
+          <span style={{color: 'red'}}>
+            Thanks for your input but we have this book
+          </span>
+          : null
+        }
         <input placeholder='Author'
                value={this.state.author}
                onChange={this.handleAuthorInput}/>

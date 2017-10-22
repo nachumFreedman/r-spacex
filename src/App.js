@@ -5,7 +5,7 @@ import FaTimesCircle from 'react-icons/lib/fa/times-circle';
 import Modal from 'react-modal';
 import UpdateBookModal from './UpdateBookModal'
 
-const { getBooks, updateBook, deleteBook } = api;
+const { getBooks, updateBook, deleteBook, addBook } = api;
 
 const editModalStyle ={
   content: {
@@ -56,23 +56,36 @@ class App extends Component {
     deleteBook(this.state.isDeleteModal)
       .then(this.updateBookList)
       .then(this.toggleDeleteModal)
-  }
+  };
 
-  updateBook = (book) => {
-    updateBook(book)
-      .then(this.updateBookList)
-      .then(this.toggleEditModal)
-  }
+  onSave = (book) => {
+    if(book.id){
+      return updateBook(book)
+        .then(this.updateBookList)
+        .then(this.toggleEditModal)      
+    } else {
+      return addBook(book)
+        .then(this.updateBookList)
+        .then(this.toggleEditModal)
+    }
+  };
+  
+  addBookModal = () => {
+    this.setState((this.state) = ({
+      isEditModal: {title: '', author: '', date: '',}
+    }) )
+  };
 
   render() {
     console.log(this.state)    
     return (
       <div className="App">
+        <button onClick={this.addBookModal}>+</button>
         {
           this.state.isEditModal ? 
           <UpdateBookModal
             isOpen={true}
-            onSave={(book)=>this.updateBook(book)}
+            onSave={(book)=>this.onSave(book)}
             onCancel={()=>this.toggleEditModal()}
             initialState={this.state.isEditModal}/>
           : null
