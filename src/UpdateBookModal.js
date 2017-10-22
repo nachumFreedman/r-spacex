@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import './App.css';
 import Modal from 'react-modal';
 
 const editModalStyle ={
   content: {
-    maxWidth: '20%',
-    maxHeight: '15%',
+    minWidth: '25%',
+    minHeight: '30%',
     top: '30%',
     left: '35%',
     borderRadius: '5px',
-    minWidth: '200px',   
+    width: '50px',   
+    height: '17px',
   }
 }
 
@@ -51,26 +51,33 @@ class UpdateBookModal extends Component {
         shouldCloseOnOverlayClick={true}
         onRequestClose={this.props.onCancel}
         isOpen={this.props.isOpen}>
-        <input placeholder='Title'
-               value={this.state.title}
-               onChange={this.handleTitleInput}/>
         {
           this.state.isTitleInvalid ?
-          <span style={{color: 'red'}}>
-            Thanks for your input but we have this book
+          <span style={{color: 'red', fontSize: '.8em'}}>
+            Thanks for your input but we already have this book
           </span>
+       
           : null
         }
+        <input placeholder='Title'
+               value={this.state.title}
+               onChange={this.handleTitleInput}
+               className='updatemodal-inputbox'/>
+        
         <input placeholder='Author'
                value={this.state.author}
-               onChange={this.handleAuthorInput}/>
+               onChange={this.handleAuthorInput}
+               className='updatemodal-inputbox'/>
+
         <input placeholder='Date'
                value={this.state.date}
-               onChange={this.handleDateInput}/>
-        <button className='btn' type='button' onClick={this.onSave}>
+               onChange={this.handleDateInput}
+               className='updatemodal-inputbox'/>
+        <br />        
+        <button className='btn btn-primary' onClick={this.onSave}>
           Save
         </button>
-        <button className='btn' type='button' onClick={this.props.onCancel}>
+        <button className="btn btn-default"  onClick={this.props.onCancel}>
           Cancel
         </button>
       </Modal>

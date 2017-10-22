@@ -2,19 +2,21 @@ import React, { Component } from 'react';
 import './App.css';
 import  api  from './api';
 import FaTimesCircle from 'react-icons/lib/fa/times-circle';
+import FaMagic from 'react-icons/lib/fa/magic';
 import Modal from 'react-modal';
 import UpdateBookModal from './UpdateBookModal'
 
 const { getBooks, updateBook, deleteBook, addBook } = api;
 
-const editModalStyle ={
+const deleteModalStyle ={
   content: {
-    maxWidth: '20%',
-    maxHeight: '20%',
+    maxWidth: '30%',
+    maxHeight: '27%',
     top: '30%',
     left: '35%',
     borderRadius: '5px',
-    minWidth: '200px'
+    minWidth: '200px',
+    height: '250px'
   }
 }
 
@@ -80,7 +82,10 @@ class App extends Component {
     console.log(this.state)    
     return (
       <div className="App">
-        <button onClick={this.addBookModal}>+</button>
+        <button className='btn btn-default add-book-button'
+                onClick={this.addBookModal}>
+          +
+        </button>
         {
           this.state.isEditModal ? 
           <UpdateBookModal
@@ -91,13 +96,17 @@ class App extends Component {
           : null
         }
         <Modal
-          style={editModalStyle}
+          style={deleteModalStyle}
           shouldCloseOnOverlayClick={true}
           onRequestClose={()=>this.toggleDeleteModal()}
           isOpen={!!this.state.isDeleteModal}>
           <h1>Are you sure?</h1> 
-          <button onClick={this.deleteBook}>Delete</button>
-          <button onClick={()=>this.toggleDeleteModal()}>Cancel</button>
+          <button className='btn btn-danger'
+                  style={{marginRight: '4px'}}
+                  onClick={this.deleteBook}>
+            Delete
+          </button>
+          <button className='btn btn-default' onClick={()=>this.toggleDeleteModal()}>Cancel</button>
         </Modal>
         <ul className='book-tile-container'>{
           this.state.books.map(({id, author, title, date}) =>(
@@ -112,11 +121,12 @@ class App extends Component {
               <button type='button'
                       className='btn btn-default'
                       onClick={()=>this.toggleEditModal({id, author, title, date})}>
-                edit icon
+                <FaMagic />
               </button>
-              <button className='book-tile-delete-button'
-                      onClick={()=>this.toggleDeleteModal(id)}>
-                delete button
+              <button className='btn btn-default'
+                      onClick={()=>this.toggleDeleteModal(id)}
+                      style={{marginLeft: '6px',}}>
+                <FaTimesCircle style={{color: 'red'}}/>
               </button>
             </li>
           ) )

@@ -54,5 +54,13 @@
   flex-flow: row wrap;
 }
 
-.book-tile:h1 {
+.updatemodal-inputbox {
+  margin: 4px;
+}
+
+.App button:focus {
+  outline: none;
+}
+.App button:active {
+  background-color: #e6e6e6;
 }
