@@ -7,6 +7,13 @@ export default {
   getBooks: () => {
     return Promise.resolve( books )
   },
+
+  getLaunches: (launches) => {
+    return fetch('https://api.spacexdata.com/v2/launches/all')
+      .then(function(response) {
+        return response.json();
+      })
+  },
   
   updateBook: (newBook)=> {
     if(books.find(({title})=>

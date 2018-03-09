@@ -50,6 +50,7 @@ class App extends Component {
   render() {
     console.log(this.state)    
     return (
+
       <div className="App">
       <button className='btn btn-default add-book-button'
       onClick={this.addBookModal}/>      
