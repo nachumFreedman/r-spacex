@@ -6,7 +6,7 @@ import FaMagic from 'react-icons/lib/fa/magic';
 import Modal from 'react-modal';
 import UpdateBookModal from './UpdateBookModal'
 
-const { getLaunches,   } = api;
+const { getLaunches, getRockets  } = api;
 
 const deleteModalStyle ={
   content: {
@@ -24,6 +24,7 @@ class App extends Component {
   
   state = {
     launches: [],
+    rockets:[],
   };
   
 
@@ -40,16 +41,28 @@ class App extends Component {
       })
   };
 
+  
+  updateRocketModal = () => {
+    getRockets()
+      .then((rockets) => {
+        this.setState((state) => ({
+          launches: rockets,
+        } ))
+      })
+  };
+
   isReadMore = (value) => {
     this.setState((state) => ({
-      isReadMore: state + value,
+      isReadMore: value,
     }) )
   };
+
   
 
   render() {
     console.log(this.state)    
     return (
+      <div>
       <div className="App">
       <button className='btn btn-default add-book-button'
       onClick={this.addBookModal}/>      
@@ -68,27 +81,28 @@ class App extends Component {
       onClick={()=>this.toggleDeleteModal()}>Cancel</button>
       </Modal>
       <ul className='book-tile-container'>{
-        this.state.launches.map(({flight_number, details, rocket, launch_success, }) =>(
-          <li key={flight_number} className='book-tile'>            
-            <p>
-              {details}
-              {flight_number} 
-              {rocket.rocket_name} 
-              {launch_success ? 'successful launch' : null}  
-              {launch_success === false ?  'failed launch :(' : null}
-              {launch_success === null ? 'still waiting' : null}
-              <a onClick={this.isReadMore(flight_number)} style={{color: 'blue'}}>Read more...</a>
-            </p>
-            
-          </li>          
+        this.state.map(({launches, rockets})
+          .map(({flight_number, details, rocket, launch_success, }) =>(
+            <li key={flight_number} className='book-tile'>            
+              <p>
+                {details}
+                {flight_number} 
+                {rocket.rocket_name} 
+                {launch_success ? 'successful launch' : null}  
+                {launch_success === false ?  'failed launch :(' : null}
+                {launch_success === null ? 'still waiting' : null}
+                <a onClick={this.isReadMore(flight_number)} style={{color: 'blue'}}>Read more...</a>
+              </p>
+              
+            </li>          
         </ul>
-        
-</div>
-          
-        ) ) 
+</div>        
+      </div>
+            
+          ) ) 
       };
-    )
-  }; 
+    );
+  } 
 };
 
 
