@@ -2,11 +2,19 @@
   text-align: center;
 }
 
+.App button:focus {
+  outline: none;
+}
+
+.book-tile-container {
+  display:flex;
+  flex-wrap: wrap;
+}
 
 .launch-tile {
   margin: 10px;
   border: 1px solid black;
-  min-width: 50px;
+  min-width: 100px;
   width: 30%;
   padding: 15px;
   padding-top: 0;
@@ -15,18 +23,10 @@
   list-style: none;
 }
 
-.book-tile:hover {
+.launch-tile:hover {
   box-shadow: 2px 2px 5px #888888;
 }
 
-.book-tile-container {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.App button:focus {
-  outline: none;
-}
 .App button:active {
   background-color: #e6e6e6;
 }
