@@ -24,12 +24,14 @@ class App extends Component {
   
   state = {
     launches: [],
-    rockets:[],
+    rockets: [],
+    readMoreFlight: false,
   };
   
 
   componentDidMount() {      
-    this.updateLaunchList()
+    this.updateLaunchList();
+    this.updateRocketList();
   };
 
   updateLaunchList = () => {
@@ -41,69 +43,68 @@ class App extends Component {
       })
   };
 
-  
-  updateRocketModal = () => {
+  updateRocketList = () => {
     getRockets()
       .then((rockets) => {
         this.setState((state) => ({
-          launches: rockets,
+          rockets: rockets,
         } ))
       })
   };
 
-  isReadMore = (value) => {
+  setReadMoreFlight = (flight_number, details, launch_site, rocket) => {
+    flight_number ? 
     this.setState((state) => ({
-      isReadMore: value,
-    }) )
+      readMoreFlight: flight_number, details, launch_site, rocket 
+    }) ) : false
   };
-
   
 
   render() {
     console.log(this.state)    
     return (
-      <div>
+      
       <div className="App">
-      <button className='btn btn-default add-book-button'
-      onClick={this.addBookModal}/>      
-      <Modal
-      style={deleteModalStyle}
-      shouldCloseOnOverlayClick={true}
-      onRequestClose={()=>this.toggleDeleteModal()}
-      isOpen={!!this.state.isDeleteModal}>
-      <h1>Are you sure?</h1> 
-      <button className='btn btn-danger'
-      style={{marginRight: '4px'}}
-      onClick={this.deleteBook}>
-      Delete
-      </button>
-      <button className='btn btn-default'
-      onClick={()=>this.toggleDeleteModal()}>Cancel</button>
-      </Modal>
-      <ul className='book-tile-container'>{
-        this.state.map(({launches, rockets})
-          .map(({flight_number, details, rocket, launch_success, }) =>(
-            <li key={flight_number} className='book-tile'>            
-              <p>
-                {details}
-                {flight_number} 
-                {rocket.rocket_name} 
-                {launch_success ? 'successful launch' : null}  
-                {launch_success === false ?  'failed launch :(' : null}
-                {launch_success === null ? 'still waiting' : null}
-                <a onClick={this.isReadMore(flight_number)} style={{color: 'blue'}}>Read more...</a>
-              </p>
-              
-            </li>          
-        </ul>
-</div>        
-      </div>
-            
-          ) ) 
-      };
-    );
+        {
+          this.state.readMoreFlight &&
+          (
+            <Modal
+              style={this.deleteModalStyle}
+              shouldCloseOnOverlayClick={true}
+              onRequestClose={()=>this.setReadMoreFlight()}
+              isOpen={!!this.state.readMoreFlight}>
+              <h1>{this.state.readMoreFlight}</h1> 
+              <button className='btn btn-default'
+                      onClick={()=>this.setReadMoreFlight()}>close</button>
+            </Modal>
+          )              
+        }
+        
+        <ul className='book-tile-container'>
+          {
+            this.state.launches.map(({flight_number, details, rocket, launch_success, launch_site,}) =>(
+              <li key={flight_number} className='book-tile'>            
+                <p>
+                  {details}
+                  {flight_number} 
+                  {rocket.rocket_name} 
+                  {launch_success ? 'successful launch' : null}  
+                  {launch_success === false ?  'failed launch' : null}
+                  {launch_success === null ? 'still waiting' : null}
+                  <a onClick={
+                    ()=>this.setReadMoreFlight(
+                      flight_number, details, launch_site.name, rocket
+                    )}
+                     style={{color: 'blue'}}>Read more...</a>
+                </p>
+                
+              </li>          
+            ))
+          }
+        </ul>          
+      </div>          
+    );  
   } 
 };
-
 
 export default App;
